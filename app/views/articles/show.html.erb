@@ -1,8 +1,10 @@
 <h1><%= @article.title %></h1>
 <p>
+  <% if @article.tags.exists? %>
   Tags:
-  <% @article.tags.each do |tag| %>
-    <%= link_to tag.name, tag_path(tag) %>
+    <% @article.tags.each do |tag| %>
+      <%= link_to tag.name, tag_path(tag) %>
+    <% end %>
   <% end %>
 </p><br/>
 
@@ -20,8 +22,13 @@
                           data: {confirm: "Really delete the article?"} %>
 <% end %>
 
-<h3>Comments (<%= @article.comments.count %>)</h3>
-<%= render partial: 'articles/comment', collection: @article.comments %>
+<% if @article.comments.count > 0 %>
+  <br/><br/>
+  <h4>Comments (<%= @article.comments.count %>)</h4>
+  <%= render partial: 'articles/comment', collection: @article.comments %>
+<% else %>
+  <h6>There are no comments for this article yet.</h6>
+<% end %>
 
 <br />
 <% if logged_in? %>
